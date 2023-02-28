@@ -5,7 +5,7 @@ from itertools import chain
 import cv2
 from PIL import Image
 import io
-
+#Backround that is constant in every frame
 def bac(x_points, y_points, med_vals):
     plt.clf()
     height = 9 
@@ -20,7 +20,7 @@ def bac(x_points, y_points, med_vals):
     (dot,) = plt.plot([], [], 'o', color='r', markersize=5, animated=True)
     
     return (dot,saved_bg, fig)
-
+#Generates frames
 def backround_generation(x_points, median, index, d, bg, sf):
     sf.canvas.restore_region(bg)
     d.set_xdata(x_points[index])
@@ -47,7 +47,7 @@ def backround_generation(x_points, median, index, d, bg, sf):
     return img
 
 
-
+#Find the median value to plot red dot on
 def find_median(x_arr, y_arr, collumn):
     median = []
     for i in range((len(x_arr))):
@@ -70,7 +70,7 @@ y_vals = []
 coll = len(raw_data.columns) - 1
 
 
-
+#Put data frame values into lists
 for column in raw_data:
     if(column == 'Time'): 
         time_data = raw_data['Time']
@@ -85,14 +85,18 @@ df1 = raw_data.loc[:, raw_data.columns != 'Time']           #orient Y values to 
 for i in df1.stack():
     y_vals.append(i)
 
-
+#Median points that the red dot moves on
 med_values = find_median(x_vals, y_vals, coll)
+
+#General movie settings 
 size = (700, 900)
 fourcc = cv2.VideoWriter_fourcc(*'MJPG')
 output_file = "movie3.avi"
 video_writer = cv2.VideoWriter(output_file, fourcc, 85, size)
+
+#Generate the cosntant backround 
 d,bg,sf = bac(x_vals, yp_vals, med_values)
-#generating the final movie where I'm running into usues. Everything else seems to be working properly
+#Put final frames together 
 for idx, med in enumerate(med_values):
    
     final_img = backround_generation(x_vals, med, idx, d, bg, sf)
