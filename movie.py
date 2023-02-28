@@ -61,7 +61,7 @@ def find_median(x_arr, y_arr, collumn):
 
 
 
-raw_data = pd.read_excel('scene2.xlsx', 'Sheet1', header=2)
+raw_data = pd.read_excel('oscillation_data.xlsx', 'Sheet1', header=2)
 
 x_vals = []
 yp_vals = []
